@@ -12,3 +12,19 @@ document.getElementById("addButton").addEventListener("click", function() {
         todoInput.value = "";
     }
 });
+
+const lists = {
+    1: { name: 'Shopping list', items: ['milk', 'bread', 'eggs'] },
+    2: { name: 'Honey do list', items: ['clean garage', 'mow lawn'] },
+    3: { name: 'Workout routine', items: ['push-ups', 'squats', 'planks'] }
+  };
+
+  const currentList = {
+    name: "Shopping list",
+    toDos: [
+      { task: "Buy milk", completed: false },
+      { task: "Buy eggs", completed: true },
+      { task: "Buy bread", completed: false }
+    ]
+  };
+  
