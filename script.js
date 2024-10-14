@@ -1,82 +1,42 @@
+document.getElementById("addButton").addEventListener("click", addTodo);
+
 const lists = {
-    1: { name: 'Shopping list', toDos: [] },
-    2: { name: 'Honey do list', toDos: [] },
-    3: { name: 'Workout routine', toDos: [] },
+    1: { name: 'Urgent', toDos: [] },
+    2: { name: 'Weekly', toDos: [] },
+    3: { name: 'Not Important', toDos: [] }
 };
 
-let currentList = lists[1]; 
-
-const todoInput = document.getElementById("todoInput");
-const addButton = document.getElementById("addButton");
-const listsContainer = document.getElementById('lists');
-const currentListName = document.getElementById('current-list-name');
-const currentListToDos = document.getElementById('current-list-toDos');
-
-addButton.addEventListener("click", addTodo);
-
-function clearInput() {
-    todoInput.value = '';
-}
+let currentList = {
+    name: "To Do List",
+    toDos: [
+        { task: "Exercise", completed: false },
+        { task: "Workout", completed: true },
+        { task: "Shopping", completed: false }
+    ]
+};
 
 function addTodo() {
+    const todoInput = document.getElementById('todoInput');
     const todoText = todoInput.value.trim(); 
+    
     if (todoText) {
-        currentList.toDos.push({ task: todoText, completed: false });
-        clearInput();
-        render();
-    }
-}
-
-function toggleTodoCompletion(index) {
-    currentList.toDos[index].completed = !currentList.toDos[index].completed;
-    render();
-}
-
-function removeTodo(index) {
-    currentList.toDos.splice(index, 1);
-    render();
-}
-
-function markTodoAsCompleted(index) {
-    currentList.toDos[index].completed = !currentList.toDos[index].completed;
-    render();
-}
-
-function removeAllToDosCompleted() {
-    currentList.toDos = currentList.toDos.filter(todo => !todo.completed);
-    render();
-}
-
-function addList() {
-    const listName = prompt("Enter the name of the new list:");
-    if (listName) {
-        const newListId = Object.keys(lists).length + 1;
-        lists[newListId] = { name: listName, toDos: [] };
-        currentList = lists[newListId]; 
-        render();
-    }
-}
-
-function removeList(listId) {
-    if (confirm(`Are you sure you want to delete the list: ${lists[listId].name}?`)) {
-        delete lists[listId];
-        currentList = lists[Object.keys(lists)[0]] || null; 
+        currentLists.toDos.push({ task: todoText, completed: false });
+        todoInput.value = '';
         render();
     }
 }
 
 function render() {
-    
     let listsHtml = '<ul class="list-group">';
     Object.keys(lists).forEach((key) => {
         listsHtml += `<li class="list-group-item">${lists[key].name}
-                        <button onclick="removeList(${key})">Delete</button>
+                        <button onclick="removeList(${key})" class="btn btn-danger btn-sm">Delete</button>
                       </li>`;
     });
     listsHtml += '</ul>';
-    listsContainer.innerHTML = listsHtml;
+    document.getElementById('lists').innerHTML = listsHtml;
 
-    currentListName.innerText = currentList.name;
+    document.getElementById('current-list-name').innerText = currentLists.name;
 
     let toDosHtml = '<ul class="list-group">';
     currentList.toDos.forEach((todo, index) => {
@@ -84,10 +44,25 @@ function render() {
             <li class="list-group-item">
                 <input type="checkbox" ${todo.completed ? 'checked' : ''} onclick="markTodoAsCompleted(${index})">
                 ${todo.task}
-                <button onclick="removeTodo(${index})">Delete</button>
+                <button onclick="removeTodo(${index})" class="btn btn-danger btn-sm">Delete</button>
             </li>`;
     });
     toDosHtml += '</ul>';
-    currentListToDos.innerHTML = toDosHtml;
+    document.getElementById('current-list-toDos').innerHTML = toDosHtml;
 }
+
+function removeList(listId) {
+    delete lists[listId];
+    render();
+}
+
+function removeTodo(todoIndex) {
+    currentList.toDos.splice(todoIndex, 1);
+    render();
+}
+
+function markTodoAsCompleted(todoIndex) {
+    currentList.toDos[todoIndex].completed = !currentList.toDos[todoIndex].completed;
+    render();
+}       
 render();
