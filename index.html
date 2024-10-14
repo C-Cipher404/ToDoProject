@@ -16,18 +16,17 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-3">
+                    <div id="lists"></div> 
                 </div>
-                <div class="d-flex flex-column">
-                    <input id="todoInput" type="text" class="form-control mb-3" placeholder="Add new todo">
-                    <button id="addButton" class="btn btn-primary mb-3">Add</button>
-                    
-                    <ul class="list-group">
-                        <li class="list-group-item">Buy groceries</li>
-                        <li class="list-group-item">Complete homework</li>
-                        <li class="list-group-item">Schedule meeting</li>
-                    </ul>
+                <div class="col-6">
+                    <h2 id="current-list-name">Shopping List</h2> 
+                    <div class="d-flex flex-column">
+                        <input id="todoInput" type="text" class="form-control mb-3" placeholder="Add new todo">
+                        <button id="addButton" class="btn btn-primary mb-3">Add</button>
+
+                        <div id="current-list-toDos"></div> 
+                    </div>
                 </div>
-                <div class="col-8">
             </div>
         </div>
     </div>

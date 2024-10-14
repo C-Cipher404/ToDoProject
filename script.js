@@ -3,14 +3,9 @@ document.getElementById("addButton").addEventListener("click", function() {
     const todoText = todoInput.value.trim(); 
     
     if (todoText) {
-        const li = document.createElement("li");
-        li.className = "list-group-item";
-        li.textContent = todoText;
-        document.getElementById("todoList").appendChild(li);
-        
         currentList.toDos.push({ task: todoText, completed: false });
-        
         todoInput.value = "";
+        render();
     }
 });
 
@@ -29,8 +24,19 @@ const currentList = {
     ]
 };
 
-const toDos = [
-    { text: 'bananas', completed: false },
-    { text: '1 lbs ground turkey', completed: false },
-    { text: 'bread', completed: true }
-];
+function render() {
+    let listsHtml = '<ul class="list-group">';
+    Object.keys(lists).forEach((key) => {
+      listsHtml += `<li class="list-group-item">${lists[key].name}</li>`;
+    });
+    listsHtml += '</ul>';
+    document.getElementById('lists').innerHTML = listsHtml;
+    document.getElementById('current-list-name').innerText = currentList.name;
+    let toDosHtml = '<ul class="list-group-flush">';
+    currentList.toDos.forEach((todo) => {
+      toDosHtml += `<li class="list-group-item">${todo.task}</li>`;
+    });
+    toDosHtml += '</ul>';
+    document.getElementById('current-list-toDos').innerHTML = toDosHtml;
+}
+render();
