@@ -6,8 +6,9 @@ document.getElementById("addButton").addEventListener("click", function() {
         const li = document.createElement("li");
         li.className = "list-group-item";
         li.textContent = todoText;
-        
         document.getElementById("todoList").appendChild(li);
+        
+        currentList.toDos.push({ task: todoText, completed: false });
         
         todoInput.value = "";
     }
@@ -17,14 +18,19 @@ const lists = {
     1: { name: 'Shopping list', items: ['milk', 'bread', 'eggs'] },
     2: { name: 'Honey do list', items: ['clean garage', 'mow lawn'] },
     3: { name: 'Workout routine', items: ['push-ups', 'squats', 'planks'] }
-  };
+};
 
-  const currentList = {
+const currentList = {
     name: "Shopping list",
     toDos: [
-      { task: "Buy milk", completed: false },
-      { task: "Buy eggs", completed: true },
-      { task: "Buy bread", completed: false }
+        { task: "Buy milk", completed: false },
+        { task: "Buy eggs", completed: true },
+        { task: "Buy bread", completed: false }
     ]
-  };
-  
+};
+
+const toDos = [
+    { text: 'bananas', completed: false },
+    { text: '1 lbs ground turkey', completed: false },
+    { text: 'bread', completed: true }
+];
