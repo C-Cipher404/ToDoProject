@@ -1,0 +1,14 @@
+.outer {
+    padding: 20px;
+}
+#current-list-name {
+    font-weight: bold; 
+}
+.list-group-item {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+#current-list-toDos {
+    margin-top: 20px; 
+}
