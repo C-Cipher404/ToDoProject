@@ -23,6 +23,21 @@ const currentList = {
         { task: "Buy bread", completed: false }
     ]
 };
+function addTodo() {
+    const todoInput = document.getElementById('todoInput');
+    const todoText = todoInput.value.trim(); 
+    if (todoText) {
+        currentList.toDos.push({ task: todoText, completed: false });
+        todoInput.value = '';
+        render();
+    }
+}
+document.getElementById("addButton").addEventListener("click", addTodo);
+
+function toggleTodoCompletion(index) {
+    currentList.toDos[index].completed = !currentList.toDos[index].completed;
+    render();
+}
 
 function render() {
     let listsHtml = '<ul class="list-group">';
@@ -31,12 +46,31 @@ function render() {
     });
     listsHtml += '</ul>';
     document.getElementById('lists').innerHTML = listsHtml;
+
     document.getElementById('current-list-name').innerText = currentList.name;
-    let toDosHtml = '<ul class="list-group-flush">';
-    currentList.toDos.forEach((todo) => {
-      toDosHtml += `<li class="list-group-item">${todo.task}</li>`;
+
+    let toDosHtml = '<ul class="list-group">';
+    currentList.toDos.forEach((todo, index) => {
+        toDosHtml += `
+            <li class="list-group-item">
+                <input type="checkbox" ${todo.completed ? 'checked' : ''} onclick="toggleTodoCompletion(${index})">
+                ${todo.task}
+            </li>`;
     });
     toDosHtml += '</ul>';
     document.getElementById('current-list-toDos').innerHTML = toDosHtml;
 }
-render();
+
+function addList() {
+    const listName = prompt("Enter the name of the new list:");
+    
+    if (listName) {
+        const newListId = Object.keys(lists).length + 1;
+        lists[newListId] = {
+            name: listName,
+            toDos: []
+        };
+        currentList = lists[newListId]; 
+        render();
+    }
+}
