@@ -12,7 +12,22 @@ let currentList = {
         { task: "Shopping", completed: false }
     ]
 };
+function load() {
+    const storedLists = localStorage.getItem('lists');
+    const storedCurrentList = localStorage.getItem('currentList');
+    
+    if (storedLists) {
+        Object.assign(lists, JSON.parse(storedLists));
+    }
 
+    if (storedCurrentList) {
+        currentList = JSON.parse(storedCurrentList); 
+    }
+}
+function save() {
+    localStorage.setItem('lists', JSON.stringify(lists));
+    localStorage.setItem('currentList', JSON.stringify(currentList));
+}
 document.getElementById("addButton").addEventListener("click", addTodo);
 
 function addTodo() {
@@ -25,7 +40,6 @@ function addTodo() {
         render();
     }
 }
-
 function render() {
     let toDosHtml = '<ul class="list-group">';
     if (currentList.toDos.length === 0) {
@@ -33,7 +47,7 @@ function render() {
     } else {
         currentList.toDos.forEach((todo, index) => {
             toDosHtml += `
-                <li class="list-group-item animate__animated animate__fadeIn">
+                <li id="todo-${index}" class="list-group-item animate__animated animate__fadeIn">
                     <input type="checkbox" ${todo.completed ? 'checked' : ''} onclick="markTodoAsCompleted(${index})">
                     ${todo.task}
                     <button onclick="removeTodo(${index})" class="btn btn-danger btn-sm">Delete</button>
@@ -55,23 +69,21 @@ function render() {
     });
     listsHtml += '</ul>';
     document.getElementById('lists').innerHTML = listsHtml;
+    save();
 }
-
-function removeList(listId) {
-    delete lists[listId];
-    render(); 
-}
-
 function removeTodo(todoIndex) {
-    currentList.toDos.splice(todoIndex, 1); 
-    render(); 
-}
+    const todoElement = document.getElementById(`todo-${todoIndex}`);
+    todoElement.classList.add('animate__animated', 'animate__fadeOutRight');
 
+    setTimeout(() => {
+        currentList.toDos.splice(todoIndex, 1);
+        render();
+    }, 650);
+}
 function markTodoAsCompleted(todoIndex) {
     currentList.toDos[todoIndex].completed = !currentList.toDos[todoIndex].completed; 
     render();
 }
-
 function addList() {
     const listName = document.getElementById('new-list-name-input').value.trim();
     if (listName) {
@@ -83,5 +95,10 @@ function addList() {
         alert('Please enter a valid list name.');
     }
 }
-render();
+function removeList(listId) {
+    delete lists[listId];
+    render(); 
+}
+load();
 
+render();
