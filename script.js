@@ -20,7 +20,7 @@ function addTodo() {
     const todoText = todoInput.value.trim(); 
     
     if (todoText) {
-        currentLists.toDos.push({ task: todoText, completed: false });
+        currentList.toDos.push({ task: todoText, completed: false });
         todoInput.value = '';
         render();
     }
@@ -36,33 +36,37 @@ function render() {
     listsHtml += '</ul>';
     document.getElementById('lists').innerHTML = listsHtml;
 
-    document.getElementById('current-list-name').innerText = currentLists.name;
+    document.getElementById('current-list-name').innerText = currentList.name;
 
     let toDosHtml = '<ul class="list-group">';
-    currentList.toDos.forEach((todo, index) => {
-        toDosHtml += `
-            <li class="list-group-item">
-                <input type="checkbox" ${todo.completed ? 'checked' : ''} onclick="markTodoAsCompleted(${index})">
-                ${todo.task}
-                <button onclick="removeTodo(${index})" class="btn btn-danger btn-sm">Delete</button>
-            </li>`;
-    });
+    if (currentList.toDos.length === 0) {
+        toDosHtml += '<li class="list-group-item">No todos available</li>';
+    } else {
+        currentList.toDos.forEach((todo, index) => {
+            toDosHtml += `
+                <li class="list-group-item">
+                    <input type="checkbox" ${todo.completed ? 'checked' : ''} onclick="markTodoAsCompleted(${index})">
+                    ${todo.task}
+                    <button onclick="removeTodo(${index})" class="btn btn-danger btn-sm">Delete</button>
+                </li>`;
+        });
+    }
     toDosHtml += '</ul>';
     document.getElementById('current-list-toDos').innerHTML = toDosHtml;
 }
 
 function removeList(listId) {
-    delete lists[listId];
-    render();
+    delete lists[listId]; 
+    render(); 
 }
 
 function removeTodo(todoIndex) {
-    currentList.toDos.splice(todoIndex, 1);
-    render();
+    currentList.toDos.splice(todoIndex, 1); 
+    render(); 
 }
 
 function markTodoAsCompleted(todoIndex) {
-    currentList.toDos[todoIndex].completed = !currentList.toDos[todoIndex].completed;
-    render();
-}       
+    currentList.toDos[todoIndex].completed = !currentList.toDos[todoIndex].completed; // Toggle completion
+    render(); 
+}
 render();
